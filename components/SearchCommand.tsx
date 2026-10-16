@@ -98,7 +98,7 @@ export default function SearchCommand({
         onOpenChange={setOpen}
         className="search-dialog"
       >
-        <Command>
+        <Command className="search-command">
           <div className="search-field">
             <CommandInput
               value={searchTerm}
@@ -108,7 +108,7 @@ export default function SearchCommand({
             />
             {loading && <Loader2 className="search-loader" />}
           </div>
-          <CommandList className="search-list">
+          <CommandList className="search-list max-h-[min(60dvh,28rem)] p-2">
             {loading ? (
               <CommandEmpty className="search-list-empty">
                 Loading stocks...
@@ -135,7 +135,7 @@ export default function SearchCommand({
                       handleSelectStock();
                       router.push(`/stocks/${stock.symbol}`);
                     }}
-                    className="search-item"
+                    className="search-item my-1 min-h-16 w-full cursor-pointer gap-3 rounded-lg border border-transparent px-3 py-3 text-left transition-colors data-[selected=true]:border-gray-700 data-[selected=true]:bg-gray-800"
                   >
                     <TrendingUp className="h-4 w-4 text-gray-500" />
                     <div className="flex-1">
