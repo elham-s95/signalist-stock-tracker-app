@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2, TrendingUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { searchStocks } from '@/lib/actions/finnhub.actions';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export default function SearchCommand({
   renderAs = 'button',
@@ -22,6 +23,7 @@ export default function SearchCommand({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [loading, setLoading] = useState(false);
   const [searchError, setSearchError] = useState(false);
   const [stocks, setStocks] =
@@ -43,8 +45,13 @@ export default function SearchCommand({
 
   useEffect(() => {
     if (!open) return;
+    if (searchTerm.trim() !== debouncedSearchTerm.trim()) {
+      setLoading(true);
+      return;
+    }
+
     let cancelled = false;
-    const query = searchTerm.trim();
+    const query = debouncedSearchTerm.trim();
     if (!query && initialStocks.length > 0) {
       setStocks(initialStocks);
       setSearchError(false);
@@ -53,27 +60,24 @@ export default function SearchCommand({
     }
     setLoading(true);
     setSearchError(false);
-    const timeout = window.setTimeout(
-      async () => {
-        try {
-          const results = await searchStocks(query || undefined);
-          if (!cancelled) setStocks(results);
-        } catch {
-          if (!cancelled) {
-            setStocks([]);
-            setSearchError(true);
-          }
-        } finally {
-          if (!cancelled) setLoading(false);
+    const timeout = window.setTimeout(async () => {
+      try {
+        const results = await searchStocks(query || undefined);
+        if (!cancelled) setStocks(results);
+      } catch {
+        if (!cancelled) {
+          setStocks([]);
+          setSearchError(true);
         }
-      },
-      query ? 300 : 0,
-    );
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }, 0);
     return () => {
       cancelled = true;
       window.clearTimeout(timeout);
     };
-  }, [open, searchTerm, initialStocks]);
+  }, [open, searchTerm, debouncedSearchTerm, initialStocks]);
 
   const handleSelectStock = () => {
     setOpen(false);
