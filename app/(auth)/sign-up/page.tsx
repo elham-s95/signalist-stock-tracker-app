@@ -39,6 +39,10 @@ const SignUp = () => {
       name: data.fullName,
       email: data.email,
       password: data.password,
+      country: data.country,
+      investmentGoals: data.investmentGoals,
+      riskTolerance: data.riskTolerance,
+      preferredIndustry: data.preferredIndustry,
     });
 
     if (error) {
@@ -99,7 +103,7 @@ const SignUp = () => {
 
         {/*Investment Goals*/}
         <SelectField
-          name="investmentsGoals"
+          name="investmentGoals"
           label="Investment Goals"
           placeholder="Select your investment goal"
           options={INVESTMENT_GOALS}

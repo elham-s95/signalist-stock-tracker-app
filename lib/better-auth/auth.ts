@@ -20,6 +20,14 @@ const createAuth = async () => {
       maxPasswordLength: 128,
       autoSignIn: true,
     },
+    user: {
+      additionalFields: {
+        country: { type: 'string', required: true },
+        investmentGoals: { type: 'string', required: true },
+        riskTolerance: { type: 'string', required: true },
+        preferredIndustry: { type: 'string', required: true },
+      },
+    },
     plugins: [nextCookies()],
   });
 };
