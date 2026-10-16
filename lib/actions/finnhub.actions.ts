@@ -162,9 +162,12 @@ export const searchStocks = cache(
         results = Array.isArray(data?.result) ? data.result : [];
       }
 
+      const seenSymbols = new Set<string>();
       const mapped: StockWithWatchlistStatus[] = results
         .map((r) => {
           const upper = (r.symbol || '').toUpperCase();
+          if (!upper || seenSymbols.has(upper)) return undefined;
+          seenSymbols.add(upper);
           const name = r.description || upper;
           const exchangeFromDisplay =
             (r.displaySymbol as string | undefined) || undefined;
@@ -181,6 +184,7 @@ export const searchStocks = cache(
           };
           return item;
         })
+        .filter((item): item is StockWithWatchlistStatus => Boolean(item))
         .slice(0, 15);
 
       return mapped;
