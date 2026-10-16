@@ -215,37 +215,47 @@
     @apply cursor-pointer px-4 py-2 w-fit flex items-center gap-2 text-sm md:text-base bg-yellow-500 hover:bg-yellow-500 text-black font-medium rounded;
   }
   .search-dialog {
-    @apply !bg-gray-800 lg:min-w-[800px] border-gray-600 fixed top-10 left-1/2 -translate-x-1/2 translate-y-10;
+    @apply w-[min(42rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] max-h-[min(80dvh,38rem)] overflow-hidden border border-gray-700 bg-gray-900 p-0 shadow-2xl;
+  }
+  .search-command {
+    @apply h-auto min-h-0 w-full rounded-xl! bg-gray-900 p-0;
   }
   .search-field {
-    @apply !bg-gray-800 border-b border-gray-600 relative;
+    @apply relative flex w-full items-center border-b border-gray-700 px-4;
+    min-height: 4.25rem;
+  }
+  .search-field [data-slot="command-input-wrapper"] {
+    @apply min-w-0 flex-1 p-0;
+  }
+  .search-field [data-slot="input-group"] {
+    @apply h-14! rounded-none! border-0 bg-transparent shadow-none!;
+  }
+  .search-field [data-slot="input-group-addon"] {
+    @apply pl-1 text-gray-500;
   }
   .search-list {
-    @apply !bg-gray-800 max-h-[400px];
+    @apply max-h-[min(60dvh,28rem)] bg-gray-900 p-2;
   }
   .search-list-indicator {
-    @apply px-5 py-2
+    @apply px-5 py-6 text-center text-gray-400;
   }
   .search-list-empty {
-    @apply py-6 !bg-transparent text-center text-gray-500;
+    @apply bg-transparent py-8 text-center text-gray-400;
   }
   .search-input {
-    @apply !bg-gray-800 border-0 text-gray-400 placeholder:text-gray-500 focus:ring-0 text-base h-14 pr-10;
+    @apply h-14 min-w-0 border-0 bg-transparent pr-10 text-base text-gray-100 shadow-none outline-none placeholder:text-gray-500 focus-visible:ring-0;
   }
   .search-loader {
-    @apply absolute right-12 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 animate-spin;
+    @apply absolute right-5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 animate-spin;
   }
   .search-count {
-    @apply py-2 px-4 text-sm font-medium text-gray-400 bg-gray-700 border-b border-gray-700;
+    @apply sticky top-0 z-10 border-b border-gray-700 bg-gray-900 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-400;
   }
   .search-item {
-    @apply rounded-none my-3 px-1 w-full data-[selected=true]:bg-gray-600;
-  }
-  .search-item-link {
-    @apply px-2 w-full cursor-pointer border-b border-gray-600 last:border-b-0 transition-colors flex items-center gap-3;
+    @apply text-gray-300;
   }
   .search-item-name {
-    @apply font-medium text-base text-gray-400;
+    @apply truncate text-base font-medium text-gray-100;
   }
   .nav-list {
     @apply flex flex-col sm:flex-row p-2 gap-3 sm:gap-10 font-medium;
