@@ -4,10 +4,14 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import InputField from '@/components/forms/InputField';
 import FooterLink from '@/components/forms/FooterLink';
+import { authClient } from '@/lib/better-auth/client';
+import { useRouter } from 'next/navigation';
 
 const SignIn = () => {
+  const router = useRouter();
   const {
     register,
+    handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<SignInFormData>({
     defaultValues: {
@@ -17,11 +21,22 @@ const SignIn = () => {
     mode: 'onBlur',
   });
 
+  const onSubmit = handleSubmit(async (data) => {
+    const { error } = await authClient.signIn.email(data);
+
+    if (error) {
+      console.error('Sign in failed:', error.message);
+      return;
+    }
+
+    router.push('/');
+  });
+
   return (
     <>
       <h1 className="form-title">Welcome back</h1>
 
-      <form className="space-y-5">
+      <form onSubmit={onSubmit} className="space-y-5">
         <InputField
           name="email"
           label="Email"
