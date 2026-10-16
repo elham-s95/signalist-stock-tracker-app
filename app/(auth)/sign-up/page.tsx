@@ -10,8 +10,11 @@ import {
 } from '@/lib/constants';
 import { CountrySelectField } from '@/components/forms/CountrySelectField';
 import FooterLink from '@/components/forms/FooterLink';
+import { authClient } from '@/lib/better-auth/client';
+import { useRouter } from 'next/navigation';
 
 const SignUp = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,11 +35,18 @@ const SignUp = () => {
   const onSubmit: SubmitHandler<SignUpFormData> = async (
     data: SignUpFormData,
   ) => {
-    try {
-      console.log(data);
-    } catch (e) {
-      console.log(e);
+    const { error } = await authClient.signUp.email({
+      name: data.fullName,
+      email: data.email,
+      password: data.password,
+    });
+
+    if (error) {
+      console.error('Sign up failed:', error.message);
+      return;
     }
+
+    router.push('/');
   };
 
   return (
